@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 import datetime
 import random
 
@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 @app.route("/") # 데코레이터 / endpoint를 정의 / 특정 endpoint로 왔을 때 아래 함수를 실행시켜 사용자가 브라우저에서 볼 화면 지정
 def hello(): # 함수 만드는 방법
-    return "Hello k!"
+    return render_template('index.html') # app.py와 같은 경로, 파일 이름이 templates여야 한다.
 
 @app.route('/ssafy')
 def ssafy(): # 함수 이름 -> 다른 함수와 겹치지 x
@@ -35,7 +35,7 @@ def html_lines():
 # Variable Routing
 @app.route('/greeting/<name>')
 def greeting(name): # name == IU
-    return f'반갑습니다! {name} 님!'
+    return render_template('greeting.html', html_name = name)
 
 @app.route('/cube/<int:number>')
 def cube(number):
