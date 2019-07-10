@@ -1,0 +1,23 @@
+    /* 요소 선택자 (type) */
+h1 {
+    color: khaki;
+}
+
+h2 {
+    color: gray;
+}
+        
+/* 아이디 선택자 (id) */
+#description { 
+    background-color: blanchedalmond;
+}
+
+/* 클래스 선택자 (class) */
+li.list-item /* .list-item 도 가능 */ {
+    font-size: 20px;
+    }
+
+ /* ul안에 li를 지정 */
+ul li {
+    background-color: antiquewhite;
+}
