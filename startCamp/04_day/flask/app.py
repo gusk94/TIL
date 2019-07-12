@@ -48,6 +48,62 @@ def ascii_result():
     return render_template('ascii_result.html', result=result)
 
 
+# 사용자가 정보를 입력하는 페이지 / 정보를 제출한 후 처리하는 페이지 필요
+@app.route('/lotto_input')
+def lotto_input():
+    # 사용자가 입력할 수 있는 페이지만 전달
+    return render_template('lotto_input.html')
+
+
+@app.route('/lotto_result')
+def lotto_result():
+    # 사용자 입력 값 받기
+    lotto_round = request.args.get('round')
+    lotto_numbers = request.args.get('numbers').split()
+    infos = []
+    re = 0
+
+    # 로또 실제 당첨번호 확인
+    url = f'https://dhlottery.co.kr/common.do?method=getLottoNumber&drwNo={lotto_round}'
+    response = requests.get(url)
+    lotto_info = response.json() # json 타입의 파일을 python dictionary로 parsing
+
+    for i in range(1, 7):
+        infos.append(str(lotto_info[f'drwtNo{i}']))
+
+    # 번호 교집합 개수 찾기
+    if len(lotto_numbers) == 6:
+        matched = 0
+        for number in lotto_numbers:
+            if number in infos:
+                matched += 1
+
+        if matched == 6:
+            result = '1st'
+        elif matched == 5:
+            if str(lotto_info['bnusNo']) in lotto_numbers:
+                result = '2nd'
+            else:
+                result = '3rd'
+        elif matched == 4:
+            result = '4rd'
+        elif matched == 3:
+            result = '5rd'
+        else:
+            result = '꽝입니다'
+    else:
+        result = '다시 입력해주세요'
+
+
+    # for info in infos:
+    #     for lotto_number in lotto_numbers:
+    #         if info == lotto_number:
+    #             re += 1
+
+
+    return render_template('lotto_result.html',lotto_round=lotto_round, lotto_number=lotto_numbers, info=infos, result=result)
+
+
 if __name__ == '__main__': 
     app.run(debug=True)
     
